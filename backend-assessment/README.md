@@ -69,7 +69,7 @@ Create a `.env` file in the project root with:
 ```
 DEBUG=True
 SECRET_KEY=your_secret_key
-DATABASE_URL=postgres://auction_user:your_password@localhost:5432/auction_db
+DATABASE_URL=postgres://auction_user:your_password@localhost:5432/auction
 ```
 
 6. Run migrations:
