@@ -8,6 +8,11 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
 
+# Define API URL patterns that will be included in Swagger docs
+api_urlpatterns = [
+    path('api/v1/', include('core.urls')),
+]
+
 # Swagger documentation setup
 schema_view = get_schema_view(
     openapi.Info(
@@ -20,19 +25,18 @@ schema_view = get_schema_view(
     ),
     public=True,
     permission_classes=[permissions.AllowAny],
+    patterns=api_urlpatterns, 
 )
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     
-    # API routes
+    # API routes - ensure v1 version is in the path
     path('api/v1/', include('core.urls')),
     
-    # JWT Authentication
-    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    
-    # API Documentation
-    path('', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
-    path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
+    # API Documentation - with proper paths
+    path('api/docs/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+    path('api/docs/redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
 ]
+
+urlpatterns += api_urlpatterns
